@@ -1,0 +1,10 @@
+#! /bin/sh -e
+
+mkdir -p glibc-build
+cd glibc-build
+
+../glibc/configure \
+    --prefix=/usr
+
+make
+make install_root="$1" install
