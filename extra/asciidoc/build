@@ -1,0 +1,10 @@
+#! /bin/sh -e
+
+sed -i -e 's#python a2x.py#python2 a2x.py#' Makefile.in
+
+autoconf
+./configure \
+    --prefix=/usr
+
+make
+make DESTDIR="$1" install
