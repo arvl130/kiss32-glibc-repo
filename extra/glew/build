@@ -1,0 +1,8 @@
+#! /bin/sh -e
+
+make \
+    STRIP= \
+    LIBDIR=/usr/lib
+make install.all \
+    DESTDIR="$1" \
+    LIBDIR=/usr/lib
