@@ -1,0 +1,65 @@
+This patch adds the missing functions in src/menu/menudef.cpp
+which causes linker errors when building.
+
+--- a/src/menu/menudef.cpp
++++ b/src/menu/menudef.cpp
+@@ -73,8 +73,57 @@
+ PClass *DefaultListMenuClass;
+ PClass *DefaultOptionMenuClass;
+ 
+-void I_BuildALDeviceList(FOptionValues *opt);
+-void I_BuildALResamplersList(FOptionValues *opt);
++void I_BuildALDeviceList(FOptionValues* opt)
++{
++        opt->mValues.Resize(1);
++        opt->mValues[0].TextValue = "Default";
++        opt->mValues[0].Text = "Default";
++
++#ifndef NO_OPENAL
++        if (IsOpenALPresent())
++        {
++                const ALCchar* names = (alcIsExtensionPresent(NULL, "ALC_ENUMERATE_ALL_EXT") ?
++                        alcGetString(NULL, ALC_ALL_DEVICES_SPECIFIER) :
++                        alcGetString(NULL, ALC_DEVICE_SPECIFIER));
++                if (!names)
++                        Printf("Failed to get device list: %s\n", alcGetString(NULL, alcGetError(NULL)));
++                else while (*names)
++                {
++                        unsigned int i = opt->mValues.Reserve(1);
++                        opt->mValues[i].TextValue = names;
++                        opt->mValues[i].Text = names;
++
++                        names += strlen(names) + 1;
++                }
++        }
++#endif
++}
++
++void I_BuildALResamplersList(FOptionValues *opt)
++{
++        opt->mValues.Resize(1);
++        opt->mValues[0].TextValue = "Default";
++        opt->mValues[0].Text = "Default";
++
++#ifndef NO_OPENAL
++        if (!IsOpenALPresent())
++                return;
++        if (!alcGetCurrentContext() || !alIsExtensionPresent("AL_SOFT_source_resampler"))
++                return;
++
++        LPALGETSTRINGISOFT alGetStringiSOFT = reinterpret_cast<LPALGETSTRINGISOFT>(alGetProcAddress("alGetStringiSOFT"));
++        ALint num_resamplers = alGetInteger(AL_NUM_RESAMPLERS_SOFT);
++
++        unsigned int idx = opt->mValues.Reserve(num_resamplers);
++        for (ALint i = 0; i < num_resamplers; ++i)
++        {
++                const ALchar* name = alGetStringiSOFT(AL_RESAMPLER_NAME_SOFT, i);
++                opt->mValues[idx].TextValue = name;
++                opt->mValues[idx].Text = name;
++                ++idx;
++        }
++#endif
++}
+ 
+ DEFINE_GLOBAL_NAMED(OptionSettings, OptionMenuSettings)
+ 

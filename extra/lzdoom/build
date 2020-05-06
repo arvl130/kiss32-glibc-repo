@@ -1,0 +1,17 @@
+#! /bin/sh -e
+
+patch -p1 < add-missing-buildallist-func.patch
+
+cmake -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_EXE_LINKER_FLAGS="-Wl,-z,noexecstack" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DDYN_FLUIDSYNTH=OFF \
+    -DDYN_GTK=OFF \
+    -DDYN_MPG123=OFF \
+    -DDYN_OPENAL=OFF \
+    -DDYN_SNDFILE=OFF \
+    -DINSTALL_PATH=bin \
+    -DINSTALL_PK3_PATH=share/lzdoom
+
+make
+make DESTDIR="$1" install
