@@ -1,0 +1,27 @@
+#! /bin/sh -e
+
+pkgroot="$1/usr/share/xml/docbook/xsl-stylesheets-1.79.2"
+dir="docbook-xsl-1.79.2"
+install -Dm644 "$dir/VERSION" "$dir/VERSION.xsl" -t "$pkgroot"
+
+    for fn in assembly common eclipse epub epub3 fo highlighting html \
+        htmlhelp javahelp lib manpages params profiling roundtrip template \
+        website xhtml xhtml-1_1 xhtml5; do
+        ls "$dir/$fn"/*.xml 2> /dev/null && install -Dm644 "$dir/$fn"/*.xml -t "$pkgroot/$fn" || true
+        ls "$dir/$fn"/*.xsl 2> /dev/null && install -Dm644 "$dir/$fn"/*.xsl -t "$pkgroot/$fn" || true
+        ls "$dir/$fn"/*.dtd 2> /dev/null && install -Dm644 "$dir/$fn"/*.dtd -t "$pkgroot/$fn" || true
+        ls "$dir/$fn"/*.ent 2> /dev/null && install -Dm644 "$dir/$fn"/*.ent -t "$pkgroot/$fn" || true
+    done
+
+pkgroot="$1/usr/share/xml/docbook/xsl-stylesheets-1.79.2-nons"
+dir="docbook-xsl-nons-1.79.2"
+install -Dm644 "$dir/VERSION" "$dir/VERSION.xsl" -t "$pkgroot"
+
+    for fn in assembly common eclipse epub epub3 fo highlighting html \
+        htmlhelp javahelp lib manpages params profiling roundtrip template \
+        website xhtml xhtml-1_1 xhtml5; do
+        ls "$dir/$fn"/*.xml 2> /dev/null && install -Dm644 "$dir/$fn"/*.xml -t "$pkgroot/$fn" || true
+        ls "$dir/$fn"/*.xsl 2> /dev/null && install -Dm644 "$dir/$fn"/*.xsl -t "$pkgroot/$fn" || true
+        ls "$dir/$fn"/*.dtd 2> /dev/null && install -Dm644 "$dir/$fn"/*.dtd -t "$pkgroot/$fn" || true
+        ls "$dir/$fn"/*.ent 2> /dev/null && install -Dm644 "$dir/$fn"/*.ent -t "$pkgroot/$fn" || true
+    done
