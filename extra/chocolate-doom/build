@@ -1,0 +1,18 @@
+#! /bin/sh -e
+
+./configure \
+    --prefix=/usr
+
+make
+make DESTDIR="$1" install
+install -dm 755 "$1"/usr/share/games/doom
+
+# dedup all the *-setup programs
+rm "$1"/usr/bin/chocolate-heretic-setup
+rm "$1"/usr/bin/chocolate-hexen-setup
+rm "$1"/usr/bin/chocolate-strife-setup
+mv "$1"/usr/bin/chocolate-doom-setup "$1"/usr/bin/chocolate-setup
+ln -s chocolate-setup "$1"/usr/bin/chocolate-doom-setup
+ln -s chocolate-setup "$1"/usr/bin/chocolate-heretic-setup
+ln -s chocolate-setup "$1"/usr/bin/chocolate-hexen-setup
+ln -s chocolate-setup "$1"/usr/bin/chocolate-strife-setup
