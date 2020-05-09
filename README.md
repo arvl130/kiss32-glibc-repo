@@ -1,4 +1,4 @@
-# [KISS Linux](https://k1ss.org/) for i686 Glibc 🐃
+# [KISS Linux](https://k1ss.org/) for i686 Glibc 🐂
 
 This is a repository containing an unofficial port of KISS Linux to the i686 architecture based on Glibc.
 
