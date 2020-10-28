@@ -1,0 +1,4 @@
+[submodule "kiss32-main"]
+	path = kiss32-main
+	url = https://github.com/arvl130/kiss32-repo
+	branch = master
